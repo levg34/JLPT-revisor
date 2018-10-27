@@ -58,6 +58,7 @@ app.controller('myCtrl', function($scope) {
 			$scope.current[4] = 'check'
 		} else {
 			// TODO: display error
+			delete $scope.answer
 		}
 	}
 	
