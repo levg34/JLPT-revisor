@@ -27,7 +27,7 @@
   <h2 ng-bind="possibleAnswers" ng-show="false"></h2>
   
   <div class="btn-group">
-    <input type="text" class="form-control" ng-model="answer">
+    <input type="text" class="form-control" ng-model="answer" my-enter="enter()">
     <button class="btn btn-info" ng-click="ok()" ng-show="!current[4]">OK</button>
     <button class="btn btn-default" ng-click="hiragana()" ng-show="!current[3]">hiragana</button>
     <button class="btn btn-default" ng-click="english()" ng-show="!current[4]">english</button>

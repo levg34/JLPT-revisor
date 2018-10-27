@@ -42,7 +42,7 @@ app.controller('myCtrl', function($scope) {
 	}
 	
 	$scope.know = function() {
-		$scope.known.push($scope.index-2)
+		$scope.known.push($scope.index-1)
 		$scope.next()
 	}
 	
@@ -61,10 +61,21 @@ app.controller('myCtrl', function($scope) {
 		}
 	}
 	
+	$scope.enter = function() {
+		console.log($scope.current[4])
+		if (!$scope.current[4]) {
+			$scope.ok()
+		} else if ($scope.current[4]==='success') {
+			$scope.know()
+		} else {
+			$scope.next()
+		}
+	}
+	
 	$scope.save = function() {
 		$scope.current.length = 3
 		var saveTable = $scope.vocabList.filter((x,index) => $scope.known.indexOf(index)==-1)
-		var startTable = saveTable.splice($scope.index-1)
+		var startTable = saveTable.splice($scope.index-1-$scope.known.length)
 		var datable = startTable.concat(saveTable)
 		var data = Papa.unparse(datable)
 		download(data, 'progress.csv', 'csv')
@@ -109,4 +120,18 @@ app.directive('onReadFile', function ($parse) {
 			})
 		}
 	}
+})
+
+app.directive('myEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.myEnter)
+                })
+
+                event.preventDefault()
+            }
+        })
+    }
 })
