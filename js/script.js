@@ -7,7 +7,7 @@ app.controller('myCtrl', function($scope) {
     $scope.known = []
 	
 	$scope.load = function($fileContent){
-        $scope.vocabList = Papa.parse($fileContent).data
+        $scope.vocabList = Papa.parse($fileContent).data.filter(x => x.length>2)
 		$scope.index = 0
 		$scope.current = []
 		$scope.known = []
@@ -42,16 +42,17 @@ app.controller('myCtrl', function($scope) {
 	}
 	
 	$scope.know = function() {
-		$scope.known.push($scope.index-1)
+		$scope.known.push($scope.index-2)
 		$scope.next()
 	}
 	
 	$scope.ok = function() {
-		if ($scope.possibleAnswers.indexOf($scope.answer)!==-1) {
+		$scope.hiragana()
+		if ($scope.possibleAnswers.map(x => x.toLowerCase()).indexOf($scope.answer.toLowerCase())!==-1) {
 			// unlock know !
 			// show eng
 			$scope.current[4] = 'success'
-		} else if ($scope.possibleAnswers.map(x => x.split(' ')).reduce((a,b) => a.concat(b)).indexOf($scope.answer)!==-1) {
+		} else if ($scope.possibleAnswers.map(x => x.toLowerCase()).map(x => x.split(' ')).reduce((a,b) => a.concat(b)).indexOf($scope.answer.toLowerCase())!==-1) {
 			// unlock know ? -> check
 			// show eng
 			$scope.current[4] = 'check'
@@ -62,25 +63,28 @@ app.controller('myCtrl', function($scope) {
 	
 	$scope.save = function() {
 		$scope.current.length = 3
-		var data = Papa.unparse($scope.vocabList.filter((x,index) => $scope.known.indexOf(index)==-1))
+		var saveTable = $scope.vocabList.filter((x,index) => $scope.known.indexOf(index)==-1)
+		var startTable = saveTable.splice($scope.index-1)
+		var datable = startTable.concat(saveTable)
+		var data = Papa.unparse(datable)
 		download(data, 'progress.csv', 'csv')
 	}
 	
 	function download(data, filename, type) {
-		var file = new Blob([data], {type: type});
+		var file = new Blob([data], {type: type})
 		if (window.navigator.msSaveOrOpenBlob) // IE10+
-			window.navigator.msSaveOrOpenBlob(file, filename);
+			window.navigator.msSaveOrOpenBlob(file, filename)
 		else { // Others
 			var a = document.createElement("a"),
-					url = URL.createObjectURL(file);
-			a.href = url;
-			a.download = filename;
-			document.body.appendChild(a);
-			a.click();
+					url = URL.createObjectURL(file)
+			a.href = url
+			a.download = filename
+			document.body.appendChild(a)
+			a.click()
 			setTimeout(function() {
-				document.body.removeChild(a);
-				window.URL.revokeObjectURL(url);  
-			}, 0); 
+				document.body.removeChild(a)
+				window.URL.revokeObjectURL(url)  
+			}, 0) 
 		}
 	}
 })
@@ -93,7 +97,7 @@ app.directive('onReadFile', function ($parse) {
             var fn = $parse(attrs.onReadFile)
             
 			element.on('change', function(onChangeEvent) {
-				var reader = new FileReader();
+				var reader = new FileReader()
                 
 				reader.onload = function(onLoadEvent) {
 					scope.$apply(function() {
