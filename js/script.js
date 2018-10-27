@@ -62,12 +62,11 @@ app.controller('myCtrl', function($scope) {
 	}
 	
 	$scope.enter = function() {
-		console.log($scope.current[4])
 		if (!$scope.current[4]) {
 			$scope.ok()
 		} else if ($scope.current[4]==='success') {
 			$scope.know()
-		} else {
+		} else if ($scope.current[4] !== 'check') {
 			$scope.next()
 		}
 	}
