@@ -31,6 +31,7 @@ app.controller('myCtrl', function($scope) {
 				// $scope.current = []
 			}
 		}
+		$scope.focusInput = true
 	}
 	
 	$scope.hiragana = function() {
@@ -44,10 +45,14 @@ app.controller('myCtrl', function($scope) {
 	$scope.know = function() {
 		$scope.known.push($scope.index-1)
 		$scope.next()
+		$scope.focusInput = true
 	}
 	
 	$scope.ok = function() {
 		$scope.hiragana()
+		if (!$scope.answer) {
+			return
+		}
 		if ($scope.possibleAnswers.map(x => x.toLowerCase()).indexOf($scope.answer.toLowerCase())!==-1) {
 			// unlock know !
 			// show eng
@@ -58,8 +63,12 @@ app.controller('myCtrl', function($scope) {
 			$scope.current[4] = 'check'
 		} else {
 			// TODO: display error
+			if ($scope.answer==='?') {
+				$scope.english()
+			}
 			delete $scope.answer
 		}
+		$scope.focusInput = true
 	}
 	
 	$scope.enter = function() {
@@ -69,6 +78,23 @@ app.controller('myCtrl', function($scope) {
 			$scope.know()
 		} else if ($scope.current[4] !== 'check') {
 			$scope.next()
+		}
+	}
+	
+	$scope.keyPress = function($event) {
+		if ($event.keyCode===13) {
+			$scope.enter()
+		} else if ($scope.current[4] === 'check') {
+			if ($event.keyCode === 43) {
+				// console.log('+')
+				$scope.know()
+			} else if ($event.keyCode === 45) {
+				// console.log('-')
+				$scope.next()
+			}
+			$event.preventDefault()
+		} else if ($scope.current[4]) {
+			$event.preventDefault()
 		}
 	}
 	
@@ -122,16 +148,19 @@ app.directive('onReadFile', function ($parse) {
 	}
 })
 
-app.directive('myEnter', function () {
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function (event) {
-            if(event.which === 13) {
-                scope.$apply(function (){
-                    scope.$eval(attrs.myEnter)
-                })
-
-                event.preventDefault()
-            }
-        })
+app.directive('focusMe', function($timeout) {
+  return {
+    scope: { trigger: '=focusMe' },
+    link: function(scope, element) {
+      scope.$watch('trigger', function(value) {
+        if(value === true) { 
+          //console.log('trigger',value)
+          //$timeout(function() {
+            element[0].focus()
+            scope.trigger = false
+          //})
+        }
+      })
     }
+  }
 })
