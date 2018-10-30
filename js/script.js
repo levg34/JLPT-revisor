@@ -5,9 +5,23 @@ app.controller('myCtrl', function($scope) {
     $scope.current = []
     $scope.index = 0
     $scope.known = []
+	$scope.mode = 'jap_eng'
 	
 	$scope.load = function($fileContent){
-        $scope.vocabList = Papa.parse($fileContent).data.filter(x => x.length>2)
+		var parsed = Papa.parse($fileContent).data.filter(x => x.length>2)
+		if (parsed[0]&& parsed[0].length>3) {
+			if ($scope.mode === 'reading') {
+				$scope.vocabList = parsed.map(x => [x[2],x[3],x[0]+' / '+x[1]])
+			} else if ($scope.mode === 'eng_jap') {
+				$scope.vocabList = parsed.map(x => [x[3],x[2],x[0]+' / '+x[1]])
+			} else {
+				// jap_eng
+				$scope.vocabList = parsed.map(x => [x[2],x[0]+' / '+x[1],x[3]])
+			}
+		} else {
+			// jap_eng
+			$scope.vocabList = parsed
+		}
 		$scope.index = 0
 		$scope.current = []
 		$scope.known = []

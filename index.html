@@ -16,6 +16,21 @@
     <div class="input-group">
       <input type="file" class="form-control" on-read-file="load($fileContent)">
     </div>
+    <br>
+<!-- <div ng-show="plus de 4 row"> -->
+    <label>
+      <input type="radio" ng-model="mode" value="reading">
+      Kanji reading
+    </label><br/>
+    <label>
+      <input type="radio" ng-model="mode" value="jap_eng">
+      Japanese --> English
+    </label><br/>
+    <label>
+      <input type="radio" ng-model="mode" value="eng_jap">
+      English --> Japanese
+    </label>
+<!-- </div ng-show="plus de 4 row"> -->
   </div>
 </div>
 
