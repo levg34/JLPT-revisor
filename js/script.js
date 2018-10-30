@@ -11,7 +11,7 @@ app.controller('myCtrl', function($scope) {
 		var parsed = Papa.parse($fileContent).data.filter(x => x.length>2)
 		if (parsed[0]&& parsed[0].length>3) {
 			if ($scope.mode === 'reading') {
-				$scope.vocabList = parsed.map(x => [x[2],x[3],x[0]+' / '+x[1]])
+				$scope.vocabList = parsed.map(x => [x[2],x[3],x[0]+' / '+x[1]]).filter(x => x[0])
 			} else if ($scope.mode === 'eng_jap') {
 				$scope.vocabList = parsed.map(x => [x[3],x[2],x[0]+' / '+x[1]])
 			} else {
@@ -33,8 +33,8 @@ app.controller('myCtrl', function($scope) {
 			$scope.index++
 			$scope.next()
 		} else if ($scope.index<$scope.vocabList.length) {
-			$scope.current = $scope.vocabList[$scope.index++]
 			$scope.current.length = 3
+			$scope.current = $scope.vocabList[$scope.index++]
 			delete $scope.answer
 			$scope.possibleAnswers = $scope.current[2].split(';').map(x => x.split('/')).reduce((a,b) => a.concat(b)).map(x => x.trim())
 		} else {
@@ -99,10 +99,10 @@ app.controller('myCtrl', function($scope) {
 		if ($event.keyCode===13) {
 			$scope.enter()
 		} else if ($scope.current[4] === 'check') {
-			if ($event.keyCode === 43) {
+			if ($event.keyCode === 43 || $event.keyCode === 107) {
 				// console.log('+')
 				$scope.know()
-			} else if ($event.keyCode === 45) {
+			} else if ($event.keyCode === 45 ||  $event.keyCode === 109) {
 				// console.log('-')
 				$scope.next()
 			}
@@ -117,7 +117,7 @@ app.controller('myCtrl', function($scope) {
 		var saveTable = $scope.vocabList.filter((x,index) => $scope.known.indexOf(index)==-1)
 		var startTable = saveTable.splice($scope.index-1-$scope.known.length)
 		var datable = startTable.concat(saveTable)
-		var data = Papa.unparse(datable)
+		var data = Papa.unparse(datable,{delimiter:'\t'})
 		download(data, 'progress.csv', 'csv')
 	}
 	
