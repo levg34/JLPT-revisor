@@ -44,8 +44,8 @@
   <div class="btn-group">
     <input type="text" class="form-control" ng-model="answer" ng-keypress="keyPress($event)" focus-me="focusInput">
     <button class="btn btn-info" ng-click="ok()" ng-show="!current[4]">OK</button>
-    <button class="btn btn-default" ng-click="hiragana()" ng-show="!current[3]">hiragana</button>
-    <button class="btn btn-default" ng-click="english()" ng-show="!current[4]">english</button>
+    <button class="btn btn-default" ng-click="hiragana()" ng-show="!current[3]">hint</button>
+    <button class="btn btn-default" ng-click="english()" ng-show="!current[4]">answer</button>
   </div>
   <div class="btn-group">
     <button class="btn btn-success btn-lg" ng-click="know()" ng-show="current[4]=='success'||current[4]=='check'">know</button>
