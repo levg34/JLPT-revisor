@@ -16,7 +16,13 @@ app.controller('myCtrl', function($scope) {
 				$scope.vocabList = parsed.map(x => [x[3],x[2],x[0]+' / '+x[1]])
 			} else {
 				// jap_eng
-				$scope.vocabList = parsed.map(x => [x[2],x[0]+' / '+x[1],x[3]])
+				$scope.vocabList = parsed.map(x => {
+					if (x[2]) {
+						return [x[2],x[0]+' ('+x[1]+')',x[3]]
+					} else {
+						return [x[0],x[1],x[3]]
+					}
+				})
 			}
 		} else {
 			// jap_eng
