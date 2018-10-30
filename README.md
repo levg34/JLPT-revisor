@@ -5,11 +5,15 @@ Kanji lists can be found here: https://tangorin.com/vocabulary
 
 Click on the list you want, then click on download, and click on ``TSV``, ``Add readings in romaji``, ``Reading always first``, then click on ``Download``.
 
+![tangorin](https://levg34.github.io/img/tangorin.PNG)
+
 ## How to use
 
 - Download the zip and double-click on ``index.html`` (works offline), or go to https://levg34.github.io/JLPT-revisor/
 
 - Select the kind of test you would like to try (by default: Japanese --> English)
+
+![select mode](https://levg34.github.io/img/select mode.PNG)
 
 - Click on "Chose file" and open a TSV test file
   - If you downloaded the zip, you can use data/data.tsv
